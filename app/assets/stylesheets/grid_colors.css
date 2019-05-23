@@ -1,0 +1,21 @@
+.grid-tile {
+    width: 50px;
+    height: 50px;
+    float: left;
+}
+
+.grid-tile-color-blue {
+  background-color: blue;
+}
+
+.grid-tile-color-green {
+  background-color: green;
+}
+
+.grid-tile-color-red {
+  background-color: red;
+}
+
+.grid-tile-color-yellow {
+  background-color: yellow;
+}
