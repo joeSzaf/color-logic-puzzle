@@ -12,7 +12,7 @@ class GameContainer extends Component {
   render(){
     return(
       <div>
-        <div>Hello!</div>
+        <div>Color Logic Puzzle</div>
         <GameBoard
           width={4}
           height={4}
