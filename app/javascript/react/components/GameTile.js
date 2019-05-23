@@ -10,7 +10,7 @@ const GameTile = props => {
   }
 
   return(
-    <div className={`grid-tile grid-tile-color-${COLORS[props.color]}`}>
+    <div className={`grid-tile grid-tile-color-${COLORS[props.color]}`} color={props.color} onClick={props.handleClick}>
       {props.color}
     </div>
   )
