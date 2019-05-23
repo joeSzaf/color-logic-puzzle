@@ -12,6 +12,7 @@ class GameBoard extends Component {
     this.updateSpace = this.updateSpace.bind(this)
     this.updateBoard = this.updateBoard.bind(this)
     this.handleSpaceClick = this.handleSpaceClick.bind(this)
+    this.checkNeighbors = this.checkNeighbors.bind(this)
   }
 
   initializeGameBoard() {
@@ -30,6 +31,43 @@ class GameBoard extends Component {
     })
   }
 
+  checkNeighbors(current_space, board_state, current_color){
+    let x = current_space[0]
+    let y = current_space[1]
+
+    let matched_neighbors = []
+
+    // check top neighbor
+    if (y > 0){
+      if (board_state[y-1][x] === current_color){
+        matched_neighbors.push([x, y-1])
+      }
+    }
+
+    // check bottom neighbor
+    if (y < this.props.height -1){
+      if (board_state[y+1][x] === current_color){
+        matched_neighbors.push([x, y+1])
+      }
+    }
+
+    // check right neighbor
+    if (x < this.props.width -1){
+      if (board_state[y][x+1] === current_color){
+        matched_neighbors.push([x+1, y])
+      }
+    }
+
+    // check left neighbor
+    if (x > 0){
+      if (board_state[y][x-1] === current_color){
+        matched_neighbors.push([x-1, y])
+      }
+    }
+
+    return matched_neighbors
+  }
+
   updateSpace(coordinates,board,c){
     let x = coordinates[0]
     let y = coordinates[1]
@@ -44,6 +82,8 @@ class GameBoard extends Component {
     while (update_space_queue.length > 0){
       let current_space = update_space_queue.pop()
       this.updateSpace(current_space, new_board_state, new_color)
+      let new_matches = this.checkNeighbors(current_space, new_board_state, current_color)
+      update_space_queue = update_space_queue.concat(new_matches)
     }
 
     this.setState({
