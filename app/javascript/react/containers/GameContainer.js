@@ -6,7 +6,6 @@ class GameContainer extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      board_state: []
     }
   }
 
@@ -14,7 +13,11 @@ class GameContainer extends Component {
     return(
       <div>
         <div>Hello!</div>
-        <GameBoard />
+        <GameBoard
+          width={4}
+          height={4}
+          colors={4}
+        />
       </div>
     )
   }
