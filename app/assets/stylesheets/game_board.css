@@ -1,0 +1,9 @@
+.game-board {
+  width: 400px;
+  height: 400px;
+  margin: auto;
+}
+
+.row {
+  width: 100%;
+}

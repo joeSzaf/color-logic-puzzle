@@ -12,18 +12,18 @@ class GameBoard extends Component {
   }
 
   initializeGameBoard() {
-    let init_boardstate = []
+    let init_board_state = []
 
     for (let y = 0; y < this.props.height; y++){
       let row = []
       for (let x = 0; x < this.props.width; x++){
         row.push(Math.floor(Math.random() * Math.floor(this.props.colors)))
       }
-      init_boardstate.push(row)
+      init_board_state.push(row)
     }
 
     this.setState({
-      board_state: init_boardstate
+      board_state: init_board_state
     })
   }
 
@@ -33,10 +33,23 @@ class GameBoard extends Component {
 
 
   render(){
+    let board = []
+
+    this.state.board_state.forEach(row => {
+      let current_row = []
+      row.forEach(space => {
+        current_row.push(
+          <GameTile
+            color={space}
+          />
+        )
+      })
+      board.push(<div className="row">{current_row}</div>)
+    })
+
     return(
-      <div>
-        Hello from game board!!
-        <GameTile />
+      <div className="game-board">
+        {board}
       </div>
     )
   }
