@@ -104,22 +104,24 @@ class GameBoard extends Component {
   render(){
     let board = []
 
-    this.state.board_state.forEach(row => {
+    this.state.board_state.forEach((row, yindex) => {
       let current_row = []
-      row.forEach(space => {
+      row.forEach((space, xindex) => {
         current_row.push(
           <GameTile
+            key={`${xindex}${yindex}`}
             color={space}
           />
         )
       })
-      board.push(<div className="row">{current_row}</div>)
+      board.push(<div className="row" key={`row-${yindex}`}>{current_row}</div>)
     })
 
     let control_buttons = []
     for (let i=0; i < this.props.colors; i++){
       control_buttons.push(
         <GameTile
+          key={`colorControl${i}`}
           color={i}
           handleClick={this.handleSpaceClick}
         />
