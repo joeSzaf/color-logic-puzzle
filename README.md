@@ -10,8 +10,6 @@ Click one of the squares at the bottom of the game grid to change the color of t
 
 Additional features to add next:
 
-* adding tests
-* a reset button
-* number of moves tracker
+* testing
 * a way to adjust the height/width of the game board
 * a way to adjust the number of colors
