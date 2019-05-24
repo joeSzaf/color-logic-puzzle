@@ -1,18 +1,24 @@
 import React, { Component } from 'react'
 
 import GameTile from "../components/GameTile"
+import VictoryModal from "../containers/VictoryModal"
 
 class GameBoard extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      board_state: []
+      board_state: [],
+      game_status: false,
+      victory_modal_show: false,
+      moves: 0
     }
     this.initializeGameBoard = this.initializeGameBoard.bind(this)
     this.updateSpace = this.updateSpace.bind(this)
     this.updateBoard = this.updateBoard.bind(this)
     this.handleSpaceClick = this.handleSpaceClick.bind(this)
     this.checkNeighbors = this.checkNeighbors.bind(this)
+    this.checkGameComplete = this.checkGameComplete.bind(this)
+    this.hideModal = this.hideModal.bind(this)
   }
 
   initializeGameBoard() {
@@ -27,7 +33,9 @@ class GameBoard extends Component {
     }
 
     this.setState({
-      board_state: init_board_state
+      board_state: init_board_state,
+      game_status: true,
+      moves: 0
     })
   }
 
@@ -68,6 +76,24 @@ class GameBoard extends Component {
     return matched_neighbors
   }
 
+  checkGameComplete(board){
+    let allMatch = true
+    let initialSquareColor = board[0][0]
+    board.forEach(row => {
+      row.forEach(space => {
+        if (space !== initialSquareColor) {
+          allMatch = false
+        }
+      })
+    })
+    if (allMatch) {
+      this.setState({
+        game_status: false,
+        victory_modal_show: true
+      })
+    }
+  }
+
   updateSpace(coordinates,board,c){
     let x = coordinates[0]
     let y = coordinates[1]
@@ -90,14 +116,26 @@ class GameBoard extends Component {
       board_state: new_board_state
     })
 
+    this.checkGameComplete(new_board_state)
+
   }
 
   handleSpaceClick(event){
     let new_color = parseInt(event.target.attributes.color.textContent)
-    this.updateBoard(new_color)
+    if (this.state.game_status && new_color !== this.state.board_state[0][0]){
+      this.setState({
+        moves: this.state.moves + 1
+      })
+      this.updateBoard(new_color)
+    }
   }
 
   componentDidMount(){
+    this.initializeGameBoard()
+  }
+
+  hideModal = () => {
+    this.setState({ victory_modal_show: false })
     this.initializeGameBoard()
   }
 
@@ -128,11 +166,27 @@ class GameBoard extends Component {
       )
     }
 
+    let modal = ""
+
+    if (this.state.victory_modal_show) {
+      modal =
+          <VictoryModal
+            show={this.state.victory_modal_show}
+            handleClose={this.hideModal}
+            moves={this.state.moves}
+          />
+      } else {
+        modal = ""
+      }
+
     return(
       <div className="game-board">
+        <p>Moves: {this.state.moves}</p>
         {board}
         <p>Select a color to change the top left square!</p>
         <div className="row">{control_buttons}</div>
+        <button onClick={this.initializeGameBoard}>reset</button>
+        {modal}
       </div>
     )
   }
