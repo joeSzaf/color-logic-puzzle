@@ -31,7 +31,8 @@ class GameBoard extends Component {
 
     this.setState({
       board_state: init_board_state,
-      game_status: true
+      game_status: true,
+      moves: 0
     })
   }
 
@@ -162,6 +163,7 @@ class GameBoard extends Component {
         {board}
         <p>Select a color to change the top left square!</p>
         <div className="row">{control_buttons}</div>
+        <button onClick={this.initializeGameBoard}>reset</button>
       </div>
     )
   }
