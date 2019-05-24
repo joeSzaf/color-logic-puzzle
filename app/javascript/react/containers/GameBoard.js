@@ -15,6 +15,7 @@ class GameBoard extends Component {
     this.updateBoard = this.updateBoard.bind(this)
     this.handleSpaceClick = this.handleSpaceClick.bind(this)
     this.checkNeighbors = this.checkNeighbors.bind(this)
+    this.checkGameComplete = this.checkGameComplete.bind(this)
   }
 
   initializeGameBoard() {
@@ -71,6 +72,23 @@ class GameBoard extends Component {
     return matched_neighbors
   }
 
+  checkGameComplete(board){
+    let allMatch = true
+    let initialSquareColor = board[0][0]
+    board.forEach(row => {
+      row.forEach(space => {
+        if (space !== initialSquareColor) {
+          allMatch = false
+        }
+      })
+    })
+    if (allMatch) {
+      this.setState({
+        game_status: false
+      })
+    }
+  }
+
   updateSpace(coordinates,board,c){
     let x = coordinates[0]
     let y = coordinates[1]
@@ -92,6 +110,8 @@ class GameBoard extends Component {
     this.setState({
       board_state: new_board_state
     })
+
+    this.checkGameComplete(new_board_state)
 
   }
 
