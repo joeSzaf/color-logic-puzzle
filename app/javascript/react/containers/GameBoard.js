@@ -6,7 +6,9 @@ class GameBoard extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      board_state: []
+      board_state: [],
+      game_status: false,
+      moves: 0
     }
     this.initializeGameBoard = this.initializeGameBoard.bind(this)
     this.updateSpace = this.updateSpace.bind(this)
@@ -27,7 +29,8 @@ class GameBoard extends Component {
     }
 
     this.setState({
-      board_state: init_board_state
+      board_state: init_board_state,
+      game_status: true
     })
   }
 
@@ -94,7 +97,12 @@ class GameBoard extends Component {
 
   handleSpaceClick(event){
     let new_color = parseInt(event.target.attributes.color.textContent)
-    this.updateBoard(new_color)
+    if (this.state.game_status && new_color !== this.state.board_state[0][0]){
+      this.setState({
+        moves: this.state.moves + 1
+      })
+      this.updateBoard(new_color)
+    }
   }
 
   componentDidMount(){
@@ -130,6 +138,7 @@ class GameBoard extends Component {
 
     return(
       <div className="game-board">
+        <p>Moves: {this.state.moves}</p>
         {board}
         <p>Select a color to change the top left square!</p>
         <div className="row">{control_buttons}</div>
