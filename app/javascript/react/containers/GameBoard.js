@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 import GameTile from "../components/GameTile"
+import VictoryModal from "../containers/VictoryModal"
 
 class GameBoard extends Component {
   constructor(props) {
@@ -8,6 +9,7 @@ class GameBoard extends Component {
     this.state = {
       board_state: [],
       game_status: false,
+      victory_modal_show: false,
       moves: 0
     }
     this.initializeGameBoard = this.initializeGameBoard.bind(this)
@@ -16,6 +18,7 @@ class GameBoard extends Component {
     this.handleSpaceClick = this.handleSpaceClick.bind(this)
     this.checkNeighbors = this.checkNeighbors.bind(this)
     this.checkGameComplete = this.checkGameComplete.bind(this)
+    this.hideModal = this.hideModal.bind(this)
   }
 
   initializeGameBoard() {
@@ -85,7 +88,8 @@ class GameBoard extends Component {
     })
     if (allMatch) {
       this.setState({
-        game_status: false
+        game_status: false,
+        victory_modal_show: true
       })
     }
   }
@@ -130,6 +134,11 @@ class GameBoard extends Component {
     this.initializeGameBoard()
   }
 
+  hideModal = () => {
+    this.setState({ victory_modal_show: false })
+    this.initializeGameBoard()
+  }
+
   render(){
     let board = []
 
@@ -157,6 +166,19 @@ class GameBoard extends Component {
       )
     }
 
+    let modal = ""
+
+    if (this.state.victory_modal_show) {
+      modal =
+          <VictoryModal
+            show={this.state.victory_modal_show}
+            handleClose={this.hideModal}
+            moves={this.state.moves}
+          />
+      } else {
+        modal = ""
+      }
+
     return(
       <div className="game-board">
         <p>Moves: {this.state.moves}</p>
@@ -164,6 +186,7 @@ class GameBoard extends Component {
         <p>Select a color to change the top left square!</p>
         <div className="row">{control_buttons}</div>
         <button onClick={this.initializeGameBoard}>reset</button>
+        {modal}
       </div>
     )
   }
